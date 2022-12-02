@@ -1,0 +1,55 @@
+@font-face {
+	font-family: Whitney;
+	font-style: normal;
+	font-weight: 400;
+	src: url('./Whitney-Book.woff') format('woff');
+}
+
+@font-face {
+	font-family: Whitney;
+	font-style: italic;
+	font-weight: 400;
+	src: url('./Whitney-BookItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: Whitney;
+	font-style: normal;
+	font-weight: 500;
+	src: url('./Whitney-Medium.woff') format('woff');
+}
+
+@font-face {
+	font-family: Whitney;
+	font-style: italic;
+	font-weight: 500;
+	src: url('./Whitney-MediumItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: Whitney;
+	font-style: normal;
+	font-weight: 600;
+	src: url('./Whitney-Semibold.woff') format('woff');
+}
+
+@font-face {
+	font-family: Whitney;
+	font-style: italic;
+	font-weight: 600;
+	src: url('./Whitney-SemiboldItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: Whitney;
+	font-style: normal;
+	font-weight: 700;
+	src: url('./Whitney-Bold.woff') format('woff');
+}
+
+@font-face {
+	font-family: Whitney;
+	font-style: italic;
+	font-weight: 700;
+	src: url('./Whitney-BoldItalic.woff') format('woff');
+}

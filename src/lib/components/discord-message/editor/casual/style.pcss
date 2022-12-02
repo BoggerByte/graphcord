@@ -1,0 +1,33 @@
+hr {
+	border-color: hsl(223, 7%, 25%);
+	margin: 0.05rem 0;
+}
+
+.form-group {
+	@apply mb-[8px]
+            flex flex-col;
+
+	label {
+		@apply mb-[4px] ml-[2px]
+			   block
+			   font-medium text-xs text-gray-400;
+
+		text-transform: uppercase;
+	}
+
+	input,
+	textarea {
+		@apply p-[10px] h-[40px]
+			   rounded border-none outline-none
+			   bg-gray-900
+			   resize-none;
+	}
+
+	input[type='color'] {
+		@apply py-[2px] px-[3px];
+	}
+
+	input:focus {
+		box-shadow: none;
+	}
+}
