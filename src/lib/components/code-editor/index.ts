@@ -1,1 +1,3 @@
-export { default as CodeEditor } from './index.svelte'
+import CodeEditor from './index.svelte'
+
+export default CodeEditor

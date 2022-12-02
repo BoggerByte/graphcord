@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Collapse from '../collapse.svelte'
 	import EmbedEditor from './embed.svelte'
-	import { Icon } from '$lib/components/icon'
+	import Icon from '$lib/components/icon/index.svelte'
 	import type { DiscordMessageEmbed } from '$lib/modules/discord'
 	import emptyDiscordMessageEmbed from '$lib/contents/emptyDiscordMessageEmbed'
 	import { flip } from 'svelte/animate'
@@ -53,23 +53,13 @@
 				{/each}
 			</div>
 			<div>
-				<button
-					on:click={addEmbed}
-					class="w-full p-[5px]
-							rounded
-							bg-indigo-500"
-				>
+				<button on:click={addEmbed} title="Add Embed" class="btn-add">
 					<Icon name="plus" />
 				</button>
 			</div>
 		{:else}
 			<div class="flex-grow">
-				<button
-					on:click={addEmbed}
-					class="w-full p-[5px]
-							rounded
-							bg-indigo-500"
-				>
+				<button on:click={addEmbed} class="btn-add">
 					<span class="flex items-center justify-center">
 						<Icon name="plus" /> Add embed
 					</span>

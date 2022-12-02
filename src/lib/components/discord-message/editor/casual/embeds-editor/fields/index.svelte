@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Collapse from '../../collapse.svelte'
 	import FieldEditor from './field.svelte'
-	import { Icon } from '$lib/components/icon'
-	import { flip } from 'svelte/animate'
+	import Icon from '$lib/components/icon/index.svelte'
 	import { crossfade } from 'svelte/transition'
+	import { flip } from 'svelte/animate'
 	import type { DiscordEmbedField } from '$lib/modules/discord'
 
 	const [send, receive] = crossfade({ duration: 600 })
@@ -30,40 +30,36 @@
 		fields.splice(idx, 1)
 		fields = fields
 	}
+
+	$: fieldsLimit = fields.length >= 25
 </script>
 
 <Collapse>
 	<h3 slot="header">
 		Fields
-		<span class="italic">({fields.length})</span>
+		<span class="text-gray-500 font-normal">
+			({fields.length} / 25)
+		</span>
 	</h3>
 	<div class="px-2 flex flex-row gap-1">
-		{#if fields.length > 0}
-			<div class="flex flex-col gap-1 flex-grow">
-				{#each fields as field, idx (idx)}
-					<div animate:flip in:receive|local={{ key: idx }} out:send|local={{ key: idx }}>
-						<FieldEditor
-							{idx}
-							length={fields.length}
-							bind:field
-							on:moveUp={() => moveFieldUp(idx)}
-							on:moveDown={() => moveFieldDown(idx)}
-							on:remove={() => removeField(idx)}
-						/>
-					</div>
-				{/each}
-			</div>
-			<div>
-				<button on:click={() => addField()} style="padding: 5px">
-					<Icon name="plus" />
-				</button>
-			</div>
-		{:else}
-			<div class="flex-grow">
-				<button on:click={() => addField()} style="width: 100%">
-					<Icon name="plus" /> Add field
-				</button>
-			</div>
-		{/if}
+		<div class="flex flex-col gap-1" class:flex-grow={fields.length > 0}>
+			{#each fields as field, idx (idx)}
+				<div animate:flip in:receive|local={{ key: idx }} out:send|local={{ key: idx }}>
+					<FieldEditor
+						{idx}
+						length={fields.length}
+						bind:field
+						on:moveUp={() => moveFieldUp(idx)}
+						on:moveDown={() => moveFieldDown(idx)}
+						on:remove={() => removeField(idx)}
+					/>
+				</div>
+			{/each}
+		</div>
+		<div class:flex-grow={fields.length === 0}>
+			<button on:click={addField} title="Add Field" class="btn-add" class:disabled={fieldsLimit}>
+				<Icon name="plus" />
+			</button>
+		</div>
 	</div>
 </Collapse>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CodeEditor } from '$lib/components/code-editor'
+	import CodeEditor from '$lib/components/code-editor'
 	import type { DiscordMessage } from '$lib/modules/discord'
 
 	export let message: DiscordMessage

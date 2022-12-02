@@ -8,12 +8,17 @@
 
 <Collapse isOpen={true}>
 	<h3 slot="header">Profile</h3>
-	<div class="form-group">
+
+	<div class="form-group required">
 		<label>Username <TextCounter text={author.name} maxlength="40" /></label>
-		<input maxlength="40" bind:value={author.name} />
+		<input bind:value={author.name} type="text" maxlength="40" />
+		<div class="fallback">
+
+		</div>
 	</div>
-	<div class="form-group">
+
+	<div class="form-group required">
 		<label>Avatar URL</label>
-		<input bind:value={author.icon_url} />
+		<input bind:value={author.icon_url} type="url" />
 	</div>
 </Collapse>

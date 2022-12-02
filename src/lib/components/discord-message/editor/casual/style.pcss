@@ -3,31 +3,64 @@ hr {
 	margin: 0.05rem 0;
 }
 
+.btn-collapse.disabled {
+	@apply opacity-50
+			pointer-events-none cursor-not-allowed;
+}
+
+.btn-add {
+	@apply w-full p-[5px] flex items-center justify-center
+	rounded
+	bg-indigo-500
+	transition-all duration-150 ease-in-out;
+
+	&.disabled {
+		@apply bg-gray-500 opacity-50
+		pointer-events-none cursor-not-allowed;
+	}
+}
+
 .form-group {
 	@apply mb-[8px]
             flex flex-col;
 
-	label {
-		@apply mb-[4px] ml-[2px]
-			   block
-			   font-medium text-xs text-gray-400;
+	&.required label {
+		@apply before:content-['*'] before:px-1 before:text-red-500;
+	}
 
-		text-transform: uppercase;
+	label {
+		@apply block mb-[4px] ml-[2px]
+			   font-medium text-xs text-gray-400 uppercase;
 	}
 
 	input,
-	textarea {
+	textarea,
+	select {
 		@apply p-[10px] h-[40px]
 			   rounded border-none outline-none
-			   bg-gray-900
-			   resize-none;
+			   bg-gray-900;
+
+		width: 100%;
+
+		&:focus {
+			box-shadow: none;
+		}
 	}
 
 	input[type='color'] {
 		@apply py-[2px] px-[3px];
 	}
+}
 
-	input:focus {
-		box-shadow: none;
+.form-group:has(input[type='checkbox']) {
+	@apply mb-[8px] flex flex-row items-baseline;
+
+	label {
+		@apply order-2;
+	}
+
+	input {
+		@apply h-auto mr-1;
+		width: auto;
 	}
 }

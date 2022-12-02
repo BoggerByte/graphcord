@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CodeEditor } from '$lib/components/code-editor'
+	import CodeEditor from '$lib/components/code-editor'
 	import type { DiscordMessage } from '$lib/modules/discord'
 	// import { CodegenJS } from '$lib/modules/discord/codegen'
 
@@ -9,11 +9,9 @@
 
 	// TODO: Implement DiscordPy code generator
 
-	$: code = `# ${message}`
+	$: code = `"""\n${JSON.stringify(message, null, '\t')}\n"""`
 </script>
 
-<div style="height: 500px">
-	<CodeEditor bind:code language="python" readonly>
-		<svelte:fragment slot="title">Discord message (DiscordPy)</svelte:fragment>
-	</CodeEditor>
-</div>
+<CodeEditor bind:code language="python" readonly>
+	<svelte:fragment slot="title">Discord message (DiscordPy)</svelte:fragment>
+</CodeEditor>

@@ -139,20 +139,60 @@
 				{#each message.components as actionRow}
 					<div class="discord-components-action-row">
 						{#each actionRow.components as component}
-							<div class="discord-components-action-row-child">
-								{#if component.type === 2}
+							{#if component.type === 2}
+								<div class="discord-components-action-row-children">
 									<button
-										class={`discord-components-button discord-components-button-${component.style}`}
+										class="discord-components-button discord-components-button-{component.style}"
+										class:disabled={component.disabled}
 									>
-										{component.label}
+										<div class="contents">
+											<div class="content">
+												{#if component.emoji}
+													<img
+														src="https://cdn.discordapp.com/emojis/{component.emoji
+															.id}.webp?size=44&quality=lossless"
+														alt="emoji"
+														class="emoji"
+													/>
+												{/if}
+												<div class="label">
+													{component.label}
+												</div>
+												{#if component.style === 'link'}
+													<svg
+														class="launch-icon"
+														aria-hidden="true"
+														role="img"
+														width="16"
+														height="16"
+														viewBox="0 0 24 24"
+													>
+														<path
+															fill="currentColor"
+															d="M10 5V3H5.375C4.06519 3 3 4.06519 3 5.375V18.625C3 19.936 4.06519 21 5.375 21H18.625C19.936 21 21 19.936 21 18.625V14H19V19H5V5H10Z"
+														/>
+														<path
+															fill="currentColor"
+															d="M21 2.99902H14V4.99902H17.586L9.29297 13.292L10.707 14.706L19 6.41302V9.99902H21V2.99902Z"
+														/>
+													</svg>
+												{/if}
+											</div>
+										</div>
 									</button>
-								{/if}
-								{#if component.type === 3}
-									<div class="discord-components-select-menu">
+								</div>
+							{/if}
+							{#if [3, 5, 6, 7, 8].includes(component.type)}
+								<div class="discord-components-action-row-full">
+									<div class="discord-components-select-menu" class:disabled={component.disabled}>
 										<span class="placeholder">
-											{component.placeholder}
+											{#if component.options.find((c) => c.default)}
+												{component.options.find((c) => c.default).label}
+											{:else}
+												{component.placeholder}
+											{/if}
 										</span>
-										<div class="icon">
+										<div class="icons">
 											<svg aria-hidden="true" role="img" width="24" height="24" viewBox="0 0 24 24">
 												<path
 													fill="currentColor"
@@ -161,8 +201,8 @@
 											</svg>
 										</div>
 									</div>
-								{/if}
-							</div>
+								</div>
+							{/if}
 						{/each}
 					</div>
 				{/each}
