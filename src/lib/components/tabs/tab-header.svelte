@@ -14,7 +14,7 @@
 
 {#if header}
 	<button
-		class="{$$props.class} px-6 py-1 rounded bg-none"
+		class="{$$props.class} sm:px-6 px-4 py-1 rounded bg-none"
 		class:bg-indigo-500={$activeTabId === tabId}
 		on:click={() => selectTab(tabId)}
 	>

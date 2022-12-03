@@ -4,5 +4,5 @@
 </script>
 
 <span class="ml-1 font-normal italic">
-	{text.length} / {maxlength}
+	{text?.length ? text.length : 0} / {maxlength}
 </span>
