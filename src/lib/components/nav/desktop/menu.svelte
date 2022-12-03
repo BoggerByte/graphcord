@@ -12,7 +12,7 @@
 		<Logo />
 	</div>
 	<ul class="flex flex-row gap-6">
-		<NavItem href="https://github.com">
+		<NavItem href="https://github.com/BoggerByte/Graphcord-Discord-Message-Generator">
 			<div class="flex items-center gap-1.5">
 				<img src={githubLogoLight64px} alt="github-logo-light-64px" width="20" height="20" />
 				GitHub
