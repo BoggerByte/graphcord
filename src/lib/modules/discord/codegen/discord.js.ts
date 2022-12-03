@@ -1,6 +1,10 @@
 import type { Codegen } from '../types/Codegen'
 import type { DiscordMessage } from '../types/Message'
 
+function capitalize(s: string): string {
+	return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
 export default class CodegenJS implements Codegen {
 	fromJsonMessage(message: DiscordMessage): string {
 		const jsContent = `const content = "${message.content}"\n`
@@ -26,7 +30,7 @@ export default class CodegenJS implements Codegen {
 				jsEmbedColor = `\t.setColor(0x${embed.color.substring(1).toUpperCase()})\n`
 			}
 
-			if (embed.author && Object.keys(embed.author).length > 0) {
+			if (embed.author && embed.author?.name && embed.author?.url && embed.author?.icon_url) {
 				const jsEmbedAuthorPrefix = '\t.setAuthor({\n'
 				let jsEmbedAuthorName = '',
 					jsEmbedAuthorUrl = '',
@@ -63,7 +67,7 @@ export default class CodegenJS implements Codegen {
 				jsEmbedDescription = `\t.setDescription("${embed.description}")\n`
 			}
 
-			if (embed.thumbnail && Object.keys(embed.thumbnail).length > 0) {
+			if (embed.thumbnail && embed.thumbnail?.url) {
 				jsEmbedThumbnail += `\t.setThumbnail("${embed.thumbnail.url}")\n`
 			}
 
@@ -75,9 +79,9 @@ export default class CodegenJS implements Codegen {
 					let jsEmbedFieldName = '',
 						jsEmbedFieldValue = '',
 						jsEmbedFieldInline = ''
-					const jsEmbedFieldPostfix = '\\t\\t},\n'
+					const jsEmbedFieldPostfix = '\t\t},\n'
 
-					if (!field || Object.keys(field).length === 0) {
+					if (!field || (!field?.name && !field?.value)) {
 						continue
 					}
 
@@ -98,11 +102,10 @@ export default class CodegenJS implements Codegen {
 						jsEmbedFieldInline +
 						jsEmbedFieldPostfix
 				}
-
-				jsEmbedFields += '\n\t'
+				jsEmbedFields += '\t)\n'
 			}
 
-			if (embed.footer && Object.keys(embed.footer).length > 0) {
+			if (embed.footer && embed.footer?.text && embed.footer?.icon_url) {
 				const jsEmbedFooterPrefix = `\t.setFooter({\n`
 				let jsEmbedFooterText = '',
 					jsEmbedFooterIconUrl = ''
@@ -133,16 +136,146 @@ export default class CodegenJS implements Codegen {
 				jsEmbedPostfix
 		}
 
+		let jsActionRows = ''
+		for (const actionRow of message.components) {
+			const jsActionRowPrefix = `const row${'_'} = new ActionRowBuilder()\n`
+			let jsActionRowComponents = ''
+			const jsActionRowPostfix = ')\n'
+
+			jsActionRowComponents += '\t.addComponents(\n'
+			for (const component of actionRow.components) {
+				if (component.type === 2) {
+					// button
+					const jsButtonPrefix = '\t\tnew ButtonBuilder()\n'
+					let jsButtonCustomId = ''
+					let jsButtonStyle = ''
+					let jsButtonLabel = ''
+					let jsButtonEmoji = ''
+					let jsButtonUrl = ''
+					let jsButtonDisabled = ''
+					const jsButtonPostfix = ''
+
+					if (component.custom_id) {
+						jsButtonCustomId += `\t\t\t.setCustomId("${component.custom_id}")\n`
+					}
+
+					if (component.style) {
+						jsButtonStyle += `\t\t\t.setStyle(ButtonStyle.${capitalize(component.style)})\n`
+					}
+
+					if (component.label) {
+						jsButtonLabel += `\t\t\t.setLabel("${component.label}")\n`
+					}
+
+					if (component.emoji) {
+						jsButtonEmoji += `\t\t\t.setEmoji("${component.emoji.id}")\n`
+					}
+
+					if (component.url) {
+						jsButtonUrl += `\t\t\t.setURL("${component.url}")\n`
+					}
+
+					if (component.disabled) {
+						jsButtonDisabled += `\t\t\t.setDisabled(${component.disabled ? 'true' : 'false'})\n`
+					}
+
+					jsActionRowComponents +=
+						jsButtonPrefix +
+						jsButtonCustomId +
+						jsButtonStyle +
+						jsButtonLabel +
+						jsButtonEmoji +
+						jsButtonUrl +
+						jsButtonDisabled +
+						jsButtonPostfix
+				} else if ([3, 5, 6, 7, 8].includes(component.type)) {
+					// select menu
+					const jsSelectMenuPrefix = '\t\tnew SelectMenuBuilder()\n'
+					let jsSelectMenuCustomId = ''
+					let jsSelectMenuOptions = ''
+					let jsSelectMenuPlaceholder = ''
+					let jsSelectMenuMinValues = ''
+					let jsSelectMenuMaxValues = ''
+					let jsSelectMenuDisabled = ''
+					const jsSelectMenuPostfix = ''
+
+					if (component.custom_id) {
+						jsSelectMenuCustomId += `\t\t\t.setCustomId("${component.custom_id}")\n`
+					}
+
+					if (component.options && component.options.length > 0) {
+						const jsOptionsPrefix = '\t\t\t.addOptions([\n'
+						let jsOptions = ''
+						const jsOptionsPostfix = '\t\t\t])\n'
+
+						for (const option of component.options) {
+							const jsOptionPrefix = '\t\t\t\t{\n'
+							let jsOption = ''
+							const jsOptionPostfix = '\t\t\t\t},\n'
+
+							if (option.label) {
+								jsOption += `\t\t\t\t\tlabel: "${option.label}",\n`
+							}
+							if (option.value) {
+								jsOption += `\t\t\t\t\tvalue: "${option.value}",\n`
+							}
+							if (option.description) {
+								jsOption += `\t\t\t\t\tdescription: "${option.description}",\n`
+							}
+							if (option.default) {
+								jsOption += `\t\t\t\t\tdefault: ${option.default ? 'true' : 'false'},\n`
+							}
+
+							jsOptions +=
+								jsOptionPrefix +
+								jsOption +
+								jsOptionPostfix
+						}
+
+						jsSelectMenuOptions +=
+							jsOptionsPrefix +
+							jsOptions +
+							jsOptionsPostfix
+					}
+
+					if (component.placeholder) {
+						jsSelectMenuPlaceholder += `\t\t\t.setPlaceholder("${component.placeholder}")\n`
+					}
+
+					if (component.min_values) {
+						jsSelectMenuMinValues += `\t\t\t.setMinValues(${component.min_values})\n`
+					}
+
+					if (component.max_values) {
+						jsSelectMenuMaxValues += `\t\t\t.setMaxValues(${component.max_values})\n`
+					}
+
+					if (component.disabled) {
+						jsSelectMenuDisabled += `\t\t\t.setDisabled(${component.disabled ? 'true' : 'false'})\n`
+					}
+
+					jsActionRowComponents +=
+						jsSelectMenuPrefix +
+						jsSelectMenuCustomId +
+						jsSelectMenuOptions +
+						jsSelectMenuPlaceholder +
+						jsSelectMenuMinValues +
+						jsSelectMenuMaxValues +
+						jsSelectMenuDisabled +
+						jsSelectMenuPostfix
+				}
+			}
+
+			jsActionRows +=
+				jsActionRowPrefix +
+				jsActionRowComponents +
+				jsActionRowPostfix
+		}
+
 		return (
-			'' +
-			(message.content ? `${jsContent}\n` : '') +
-			(message.embeds.length ? `${jsEmbeds}\n` : '') +
-			'await ctx.send({\n' +
-			(message.content ? `\tcontent: content\n` : '') +
-			(message.embeds.length
-				? `\tembeds: [${message.embeds.map((_, idx) => `embed${idx + 1}`).join(', ')}]\n`
-				: '') +
-			'})'
+			(message.content 			   ? `${jsContent}\n` : '') +
+			(message.embeds.length > 0 	   ? `${jsEmbeds}\n` : '') +
+			(message.components.length > 0 ? `${jsActionRows}\n` : '')
 		)
 	}
 }
