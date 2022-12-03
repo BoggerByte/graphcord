@@ -1,14 +1,15 @@
 <script lang="ts">
 	import Collapse from '../../collapse.svelte'
 	import TextCounter from '../../text-counter.svelte'
-	import { Icon } from '$lib/components/icon'
+	import Icon from '$lib/components/icon/index.svelte'
+	import type { DiscordEmbedField } from '$lib/modules/discord'
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
 
 	export let idx: number
 	export let length: number
-	export let field: any
+	export let field: DiscordEmbedField
 
 	const moveUp = () => dispatch('moveUp')
 	const moveDown = () => dispatch('moveDown')
@@ -38,6 +39,6 @@
 	</div>
 	<div class="form-group">
 		<label>Text <TextCounter text={field.value} maxlength="1024" /></label>
-		<input type="textarea" maxlength="1024" bind:value={field.value} style="height: 100px" />
+		<textarea maxlength="1024" bind:value={field.value} style="height: 100px" />
 	</div>
 </Collapse>
