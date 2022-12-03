@@ -3,7 +3,7 @@
 	import FieldsEditor from './fields/index.svelte'
 	import TextCounter from '../text-counter.svelte'
 	import ColorPicker from '../color-picker.svelte'
-	import { Icon } from '$lib/components/icon'
+	import Icon from '$lib/components/icon/index.svelte'
 	import type { DiscordMessageEmbed } from '$lib/modules/discord'
 	import { createEventDispatcher } from 'svelte'
 
@@ -79,7 +79,7 @@
 				<label>Color</label>
 				<ColorPicker bind:value={embed.color} />
 			</div>
-			<div class="form-group">
+			<div class="form-group required">
 				<label>Title <TextCounter text={embed.title} maxlength="256" /></label>
 				<input maxlength="256" bind:value={embed.title} />
 			</div>
@@ -87,7 +87,7 @@
 				<label>Title URL</label>
 				<input type="url" bind:value={embed.url} />
 			</div>
-			<div class="form-group">
+			<div class="form-group required">
 				<label>Description <TextCounter text={embed.description} maxlength="4096" /></label>
 				<textarea
 					maxlength="4096"
