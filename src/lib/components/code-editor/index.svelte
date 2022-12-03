@@ -4,7 +4,7 @@
 	import 'prismjs/components/prism-json'
 	import 'prismjs/components/prism-python'
 	import 'prismjs/themes/prism-tomorrow.min.css'
-	// import { Icon } from '$lib/components/icon'
+	// import { Icon } from '$lib/component/icon'
 	// import copyToClipboard from '$lib/utils/copyToClipboard'
 
 	export let code: string
@@ -37,7 +37,7 @@
 </style>
 
 <div
-	class="flex flex-col w-full max-w-[calc(100vw-7rem)] h-full overflow-hidden
+	class="flex flex-col w-full h-full overflow-hidden
             rounded-md border-[1px] border-[#18191b]
             bg-[#2f3136]"
 >
@@ -61,7 +61,7 @@
 		</div>
 	</div>
 	<div
-		class="flex-grow overflow-x-hidden overflow-y-scroll grid grid-cols-[80px_1fr] gap-[5px]
+		class="flex-grow overflow-auto grid grid-cols-[80px_1fr] gap-[5px]
 				leading-snug text-[14px] font-mono"
 	>
 		<div
