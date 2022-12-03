@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Icon } from '$lib/components/icon'
+	import Icon from '$lib/components/icon/index.svelte'
 	import { slide } from 'svelte/transition'
 
 	export let isOpen = false
@@ -19,10 +19,11 @@
 	           flex items-center"
 	>
 		<div>
-			<button class="flex items-center gap-2" on:click={toggle}>
+			<button class="flex items-center gap-2 text-left" on:click={toggle}>
 				<Icon
 					name="chevron-right"
-					class={`transition-all duration-200 ease-out ${isOpen ? 'rotate-90' : ''}`}
+					class="flex-shrink-0
+							transition-all duration-200 ease-out {isOpen ? 'rotate-90' : ''}"
 				/>
 				<slot name="header" />
 			</button>
@@ -32,7 +33,7 @@
 		</div>
 	</header>
 	{#if isOpen}
-		<div transition:slide|local={{ duration: 350 }} class="px-2 pb-2 flex flex-col gap-1">
+		<div transition:slide|local={{ duration: 350 }} class="px-2 flex flex-col gap-1">
 			<slot />
 		</div>
 	{/if}
