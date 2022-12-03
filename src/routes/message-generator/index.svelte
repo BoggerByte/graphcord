@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Tabs, Tab, TabLink } from '$lib/components/tabs'
-	import { Icon } from '$lib/components/icon/index.js'
+	import Icon from '$lib/components/icon/index.svelte'
 	import {
 		DiscordMessageCasualEditor,
 		DiscordMessageJSONEditor
@@ -117,3 +117,5 @@
 		</Tabs>
 	</div>
 {/if}
+
+<div class="h-[300px]" />
