@@ -1,6 +1,7 @@
 import type { DiscordMessageEmbed } from '$lib/modules/discord'
 
 const emptyDiscordMessageEmbed: DiscordMessageEmbed = {
+	color: '#949494',
 	title: 'Title',
 	author: {
 		name: '',
