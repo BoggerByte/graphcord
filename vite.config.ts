@@ -10,5 +10,5 @@ export default defineConfig({
 			$lib: path.resolve('./src/lib')
 		}
 	},
-	base: '/Graphcord-Discord-Message-Generator/'
+	base: '/graphcord/'
 })
